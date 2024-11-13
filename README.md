@@ -1,1 +1,2 @@
-# query-expansion-and-synonym-recognition
+# Query Expansion and Synonym Recognition
+UIUC CS410 24FA
