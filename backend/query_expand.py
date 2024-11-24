@@ -53,7 +53,10 @@ def expand_query(query: str) -> set:
         - set: a set of synonyms
     """
     synonyms = set()
-    words = query.split()
+
+    # preprocess the query string
+    cleaned_query = clean_str(query)
+    words = split_string(cleaned_query)
 
     return synonyms
 
