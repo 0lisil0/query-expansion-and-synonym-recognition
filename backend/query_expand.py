@@ -79,6 +79,10 @@ def expand_query(query: str) -> set:
             lemmas = syn.lemmas()
             for lemma in lemmas:
                 synonyms.add(lemma.name().replace('_', ' '))
+
+    # exclude elements that already in the query or is the query
+    remove_duplicates(words, synonyms)
+
     return synonyms
 
 
