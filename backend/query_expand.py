@@ -89,10 +89,8 @@ def expand_query(query: str) -> list:
 
 
 if __name__ == '__main__':
-    eq = expand_query('software engineer')
-    print(eq)
-
-    # a = {'software engineer', 'applied scientist', 'computer software', 'railroad engineer', 'engine driver', 'engineer', 'locomotive engineer', 'software',
-    #      'software package', 'package', 'direct', 'organise', 'orchestrate', 'software program', 'mastermind', 'software system', 'technologist', 'organize'}
-    # remove_duplicates(['software', 'engineer'], a)
-    # print(a)
+    test_query = 'software engineer'
+    eq = expand_query(test_query)
+    print(f"Your query is: {test_query}, and synonyms are: ")
+    for i in eq:
+        print(f"\t- {i}")
