@@ -1,4 +1,5 @@
 import os
+import re
 
 import nltk
 from nltk.corpus import wordnet as wn
@@ -13,17 +14,40 @@ nltk.download('wordnet', download_dir=venv_nitk_path)
 ########### TODO: you might need to change the path ###########
 
 
-def expand_query(query: str) -> list:
+def clean_str(query:str)->str:
+    """Clean the input string by removing whitespace and any
+    non-alphanumeric characters.
+
+    Args:
+        query (str): the user input string
+
+    Returns:
+        str: cleaned string
+    """
+    # replace non-alphanumeric characters with space
+    cleaned_str = re.sub(r'[^a-zA-Z0-9]', ' ', query)
+    
+    # remove leading and trailing whitespace
+    cleaned_str = cleaned_str.strip()
+    
+    return cleaned_str
+    
+    
+def expand_query(query: str) -> set:
     """Expand the input query string by finding synonyms.
     Args:
         - query (str): the user input query string
     Returns:
-        - list: a list of synonyms
+        - set: a set of synonyms
     """
-    synonyms = []
+    synonyms = set()
+    words=query.split()
+    
+    
 
     return synonyms
 
 
 if __name__ == '__main__':
     eq = expand_query('software engineer')
+    print(eq)
