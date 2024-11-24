@@ -58,6 +58,14 @@ def expand_query(query: str) -> set:
     cleaned_query = clean_str(query)
     words = split_string(cleaned_query)
 
+    for word in words:
+        # get synset of each word
+        synsets = wn.synsets(word)
+        for syn in synsets:
+            lemmas = syn.lemmas()
+            for lemma in lemmas:
+                synonyms.add(lemma.name().replace('_', ' '))
+
     return synonyms
 
 
