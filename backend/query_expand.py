@@ -61,12 +61,12 @@ def remove_duplicates(words: list, synset: set) -> set:
     synset.difference_update(words_and_query)
 
 
-def expand_query(query: str) -> set:
+def expand_query(query: str) -> list:
     """Expand the input query string by finding synonyms.
     Args:
         - query (str): the user input query string
     Returns:
-        - set: a set of synonyms
+        - list: a list of synonyms
     """
     synonyms = set()
 
@@ -85,7 +85,7 @@ def expand_query(query: str) -> set:
     # exclude elements that already in the query or is the query
     remove_duplicates(words, synonyms)
 
-    return synonyms
+    return list(synonyms)
 
 
 if __name__ == '__main__':
