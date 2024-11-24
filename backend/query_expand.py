@@ -45,6 +45,20 @@ def split_string(query: str) -> list:
     return query.split()
 
 
+def remove_duplicates(words: list, synset: set) -> set:
+    """Exclude the user input query from the synset.
+
+    Args:
+        synset (set): synset
+
+    Returns:
+        set: a set of unique synonyms
+    """
+    words_and_query = words.copy()
+    words_and_query.append(' '.join(words_and_query))
+    synset.difference_update(words_and_query)
+
+
 def expand_query(query: str) -> set:
     """Expand the input query string by finding synonyms.
     Args:
@@ -65,10 +79,14 @@ def expand_query(query: str) -> set:
             lemmas = syn.lemmas()
             for lemma in lemmas:
                 synonyms.add(lemma.name().replace('_', ' '))
-
     return synonyms
 
 
 if __name__ == '__main__':
     eq = expand_query('software engineer')
     print(eq)
+
+    # a = {'software engineer', 'applied scientist', 'computer software', 'railroad engineer', 'engine driver', 'engineer', 'locomotive engineer', 'software',
+    #      'software package', 'package', 'direct', 'organise', 'orchestrate', 'software program', 'mastermind', 'software system', 'technologist', 'organize'}
+    # remove_duplicates(['software', 'engineer'], a)
+    # print(a)
