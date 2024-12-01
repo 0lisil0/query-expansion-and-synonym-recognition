@@ -147,7 +147,6 @@ def expand_query(query: str, top_k: int = 10) -> list:
     if " " not in query.strip():
         res = get_word_synonyms(query)[:top_k]
         if not res:
-            print('--------- not found ------------')
             return get_phrase_synonym(query)[:top_k]
         return res
     else:
@@ -156,7 +155,7 @@ def expand_query(query: str, top_k: int = 10) -> list:
 
 if __name__ == '__main__':
     test_query = ['software engineer', 'job', 'heart attack',
-                  'mayday', 'examples', 'text information']
+                  'mayday', 'examples', 'text information', 'text retrieval']
     for i in test_query:
         eq = expand_query(i)
         print(f"Your query is: {i}, and synonyms are: ")
