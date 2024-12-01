@@ -147,14 +147,17 @@ def expand_query(query: str, top_k: int = 10) -> list:
     Returns:
         - list: a list of synonyms
     """
-    # check if the input is a single word or a sentence
-    if " " not in query.strip():
-        res = get_word_synonyms(query)[:top_k]
-        if not res:
+    try:
+        # check if the input is a single word or a sentence
+        if " " not in query.strip():
+            res = get_word_synonyms(query)[:top_k]
+            if not res:
+                return get_phrase_synonym(query)[:top_k]
+            return res
+        else:
             return get_phrase_synonym(query)[:top_k]
-        return res
-    else:
-        return get_phrase_synonym(query)[:top_k]
+    except Exception as e:
+        return [f"Error: {e}"]
 
 
 if __name__ == '__main__':
@@ -162,7 +165,7 @@ if __name__ == '__main__':
                   'mayday', 'examples', 'text information',
                   'text retrieval', 'Chase bank']
     for i in test_query:
-        eq = expand_query(i)
+        eq = expand_query(i, 5)
         print(f"Your query is: {i}, and synonyms are: ")
         for i in eq:
             print(f"\t- {i}")
