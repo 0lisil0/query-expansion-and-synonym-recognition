@@ -19,8 +19,7 @@ nltk.data.path.append(venv_nitk_path)
 # nltk.download('wordnet')
 ########### TODO: you might need to change the path ###########
 
-# Load Sentence-BERT model
-# Lightweight semantic similarity model
+# load Sentence-BERT model
 sbert_model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
