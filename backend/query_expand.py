@@ -149,7 +149,7 @@ def get_phrase_synonym(phrase: str) -> list:
     return [corpus[idx] for idx in top_indices]
 
 
-def expand_query(query: str) -> list:
+def expand_query(query: str, top_k: int = 10) -> list:
     """Expand the input query string by finding synonyms.
     Args:
         - query (str): the user input query string
@@ -158,33 +158,15 @@ def expand_query(query: str) -> list:
     """
     # check if the input is a single word or a sentence
     if " " not in query.strip():
-        return get_word_synonyms(query)
+        return get_word_synonyms(query)[:top_k]
 
     else:
-        return get_phrase_synonym(query)
-
-    # synonyms = set()
-
-    # # preprocess the query string
-    # cleaned_query = clean_str(query)
-    # words = split_string(cleaned_query)
-
-    # for word in words:
-    #     # get synset of each word
-    #     synsets = wn.synsets(word)
-    #     for syn in synsets:
-    #         lemmas = syn.lemmas()
-    #         for lemma in lemmas:
-    #             synonyms.add(lemma.name().replace('_', ' '))
-
-    # # exclude elements that already in the query or is the query
-    # remove_duplicates(words, synonyms)
-
-    # return list(synonyms)
+        return get_phrase_synonym(query)[:top_k]
 
 
 if __name__ == '__main__':
-    test_query = ['software engineer', 'job', 'heart attack']
+    test_query = ['software engineer', 'job', 'heart attack',
+                  'mayday', 'examples', 'text information']
     for i in test_query:
         eq = expand_query(i)
         print(f"Your query is: {i}, and synonyms are: ")
