@@ -17,6 +17,10 @@ nltk.data.path.append(venv_nitk_path)
 # you can also just use `nltk.download('wordnet')` without specifying path
 ########### TODO: you might need to change the path ###########
 
+# Load Sentence-BERT model
+# Lightweight semantic similarity model
+sbert_model = SentenceTransformer("all-MiniLM-L6-v2")
+
 
 def clean_str(query: str) -> str:
     """Clean the input string by removing whitespace and any
@@ -127,13 +131,22 @@ def get_phrase_synonym(phrase: str) -> list:
     Returns:
         list: a list of synonyms.
     """
-    synonyms = set()
-
     # preprocess the query string
-    cleaned_query = clean_str(phrase)
+    cleaned_phrase = clean_str(phrase)
 
-    # todo
-    return list(synonyms)
+    corpus = get_conceptnet_corpus(cleaned_phrase)
+
+    # generate embeddings for the input sentence and candidate terms
+    phrase_embedding = sbert_model.encode(
+        cleaned_phrase, convert_to_tensor=True)
+    term_embeddings = sbert_model.encode(
+        corpus, convert_to_tensor=True)
+
+    # compute cosine similarities
+    similarities = util.cos_sim(phrase_embedding, term_embeddings)[0]
+    top_indices = similarities.argsort(descending=True)
+
+    return [corpus[idx] for idx in top_indices]
 
 
 def expand_query(query: str) -> list:
@@ -143,13 +156,11 @@ def expand_query(query: str) -> list:
     Returns:
         - list: a list of synonyms
     """
-    # Check if the input is a single word or a sentence
+    # check if the input is a single word or a sentence
     if " " not in query.strip():
-        # Single word case
         return get_word_synonyms(query)
 
     else:
-        # more than 1 word
         return get_phrase_synonym(query)
 
     # synonyms = set()
