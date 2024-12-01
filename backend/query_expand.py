@@ -147,31 +147,35 @@ def expand_query(query: str) -> list:
     if " " not in query.strip():
         # Single word case
         return get_word_synonyms(query)
-    synonyms = set()
 
-    # preprocess the query string
-    cleaned_query = clean_str(query)
-    words = split_string(cleaned_query)
+    else:
+        # more than 1 word
+        return get_phrase_synonym(query)
 
-    for word in words:
-        # get synset of each word
-        synsets = wn.synsets(word)
-        for syn in synsets:
-            lemmas = syn.lemmas()
-            for lemma in lemmas:
-                synonyms.add(lemma.name().replace('_', ' '))
+    # synonyms = set()
 
-    # exclude elements that already in the query or is the query
-    remove_duplicates(words, synonyms)
+    # # preprocess the query string
+    # cleaned_query = clean_str(query)
+    # words = split_string(cleaned_query)
 
-    return list(synonyms)
+    # for word in words:
+    #     # get synset of each word
+    #     synsets = wn.synsets(word)
+    #     for syn in synsets:
+    #         lemmas = syn.lemmas()
+    #         for lemma in lemmas:
+    #             synonyms.add(lemma.name().replace('_', ' '))
+
+    # # exclude elements that already in the query or is the query
+    # remove_duplicates(words, synonyms)
+
+    # return list(synonyms)
 
 
 if __name__ == '__main__':
     test_query = ['software engineer', 'job', 'heart attack']
     for i in test_query:
-        eq = get_phrase_synonym(i)
-        print(f"Your query is: {test_query}, and synonyms are: ")
+        eq = expand_query(i)
+        print(f"Your query is: {i}, and synonyms are: ")
         for i in eq:
             print(f"\t- {i}")
-
