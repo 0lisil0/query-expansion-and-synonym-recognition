@@ -1,8 +1,10 @@
+import requests
 import os
 import re
 
 import nltk
 from nltk.corpus import wordnet as wn
+from sentence_transformers import SentenceTransformer, util
 
 ########### TODO: you might need to change the path ###########
 # download wordnet to destination folder
@@ -86,6 +88,36 @@ def get_word_synonyms(word: str) -> list:
     remove_duplicates([cleaned_word], synonyms)
 
     return list(synonyms)
+
+
+def get_conceptnet_corpus(query, language="en"):
+    """
+    Fetch related terms dynamically from ConceptNet's API.
+
+    Args:
+        query (str): Input word or phrase.
+        language (str): Language code (default: "en").
+        top_k (int): Number of related terms to fetch.
+
+    Returns:
+        list: A list of related terms.
+    """
+    lang_params = f'/c/{language}/'
+    filter_params = f'?filter=/c/{language}'
+    url = f"https://api.conceptnet.io/related{
+        lang_params}{query}{filter_params}"
+    response = requests.get(url).json()
+
+    # extract related terms
+    related_terms = []
+    for resp in response.get("related", []):
+        term = resp["@id"]
+        term = term[len(lang_params):]
+        term = term.replace('_', ' ')
+        if term.lower() != query.lower():  # exclude the original query term
+            related_terms.append(term)
+
+    return related_terms
 
 
 def expand_query(query: str) -> list:
