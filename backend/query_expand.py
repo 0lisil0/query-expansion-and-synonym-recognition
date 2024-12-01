@@ -1,8 +1,8 @@
-import requests
 import os
 import re
 
 import nltk
+import requests
 from nltk.corpus import wordnet as wn
 from sentence_transformers import SentenceTransformer, util
 
@@ -14,7 +14,9 @@ nltk.download('wordnet', download_dir=venv_nitk_path)
 
 # add to path
 nltk.data.path.append(venv_nitk_path)
+
 # you can also just use `nltk.download('wordnet')` without specifying path
+# nltk.download('wordnet')
 ########### TODO: you might need to change the path ###########
 
 # Load Sentence-BERT model
@@ -53,20 +55,6 @@ def split_string(query: str) -> list:
     return query.split()
 
 
-def remove_duplicates(words: list, synset: set) -> set:
-    """Exclude the user input query from the synset.
-
-    Args:
-        synset (set): synset
-
-    Returns:
-        set: a set of unique synonyms
-    """
-    words_and_query = words.copy()
-    words_and_query.append(' '.join(words_and_query))
-    synset.difference_update(words_and_query)
-
-
 def get_word_synonyms(word: str) -> list:
     """Get synonyms for a single word using WordNet.
 
@@ -87,9 +75,6 @@ def get_word_synonyms(word: str) -> list:
         lemmas = syn.lemmas()
         for lemma in lemmas:
             synonyms.add(lemma.name().replace('_', ' ').lower())
-
-    # exclude elements that already in the query or is the query
-    remove_duplicates([cleaned_word], synonyms)
 
     return list(synonyms)
 
@@ -158,8 +143,11 @@ def expand_query(query: str, top_k: int = 10) -> list:
     """
     # check if the input is a single word or a sentence
     if " " not in query.strip():
-        return get_word_synonyms(query)[:top_k]
-
+        res = get_word_synonyms(query)[:top_k]
+        if not res:
+            print('--------- not found ------------')
+            return get_phrase_synonym(query)[:top_k]
+        return res
     else:
         return get_phrase_synonym(query)[:top_k]
 
