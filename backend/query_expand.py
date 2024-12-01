@@ -61,6 +61,33 @@ def remove_duplicates(words: list, synset: set) -> set:
     synset.difference_update(words_and_query)
 
 
+def get_word_synonyms(word: str) -> list:
+    """Get synonyms for a single word using WordNet.
+
+    Args:
+        word (str): the input word.
+
+    Returns:
+        list: a list of synonyms.
+    """
+    synonyms = set()
+
+    # preprocess the word string
+    cleaned_word = clean_str(word)
+
+    # get synset of each word
+    synsets = wn.synsets(cleaned_word)
+    for syn in synsets:
+        lemmas = syn.lemmas()
+        for lemma in lemmas:
+            synonyms.add(lemma.name().replace('_', ' '))
+
+    # exclude elements that already in the query or is the query
+    remove_duplicates([cleaned_word], synonyms)
+
+    return list(synonyms)
+
+
 def expand_query(query: str) -> list:
     """Expand the input query string by finding synonyms.
     Args:
@@ -89,8 +116,12 @@ def expand_query(query: str) -> list:
 
 
 if __name__ == '__main__':
-    test_query = 'software engineer'
-    eq = expand_query(test_query)
-    print(f"Your query is: {test_query}, and synonyms are: ")
-    for i in eq:
-        print(f"\t- {i}")
+    # test_query = 'software engineer'
+    # eq = expand_query(test_query)
+    # print(f"Your query is: {test_query}, and synonyms are: ")
+    # for i in eq:
+    #     print(f"\t- {i}")
+
+    test_word = 'job'
+    a = get_word_synonyms(test_word)
+    print(f"Your synonyms are: {a}")
