@@ -74,7 +74,9 @@ def get_word_synonyms(word: str) -> list:
     for syn in synsets:
         lemmas = syn.lemmas()
         for lemma in lemmas:
-            synonyms.add(lemma.name().replace('_', ' ').lower())
+            syn = lemma.name().replace('_', ' ').lower()
+            if word != syn:
+                synonyms.add(syn)
 
     return list(synonyms)
 
