@@ -123,6 +123,10 @@ def get_phrase_synonym(phrase: str) -> list:
 
     corpus = get_conceptnet_corpus(cleaned_phrase)
 
+    # if empty, return
+    if not corpus:
+        return []
+
     # generate embeddings for the input sentence and candidate terms
     phrase_embedding = sbert_model.encode(
         cleaned_phrase, convert_to_tensor=True)
@@ -155,7 +159,8 @@ def expand_query(query: str, top_k: int = 10) -> list:
 
 if __name__ == '__main__':
     test_query = ['software engineer', 'job', 'heart attack',
-                  'mayday', 'examples', 'text information', 'text retrieval']
+                  'mayday', 'examples', 'text information',
+                  'text retrieval', 'Chase bank']
     for i in test_query:
         eq = expand_query(i)
         print(f"Your query is: {i}, and synonyms are: ")
