@@ -90,14 +90,12 @@ def get_word_synonyms(word: str) -> list:
     return list(synonyms)
 
 
-def get_conceptnet_corpus(query, language="en"):
-    """
-    Fetch related terms dynamically from ConceptNet's API.
+def get_conceptnet_corpus(query: str, language: str = "en") -> list:
+    """Fetch related terms dynamically from ConceptNet's API.
 
     Args:
         query (str): Input word or phrase.
         language (str): Language code (default: "en").
-        top_k (int): Number of related terms to fetch.
 
     Returns:
         list: A list of related terms.
