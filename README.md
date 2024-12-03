@@ -7,7 +7,8 @@ UIUC CS410 24FA
 ### Tech stack
 - Python 3.12.2
 - Flask
-- NLTK
+- NLTK - for a single word
+- ConceptNet API and Sentence BERT model for multiple words
 
 ### Functionality
 - Process user queries

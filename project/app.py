@@ -22,7 +22,7 @@ def expand():
             return jsonify({'error': 'No word provided'}), 400
 
         # Call the `expand_query` function, which is currently a build-in function now
-        # TODO: probably implement our own expand_query function here? but it might be time-consuming~~
+        # TODO: probably implement our own expand_query function here, but it might be time-consuming
         synonyms = expand_query(word)
         return jsonify({'synonyms': synonyms})
     except Exception as e:
