@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Query Synonyms</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 2em;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 1em;
+      margin: 5px 0;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      margin: 5px 0;
+    }
+  </style>
+</head>
+<body>
+  <h1>410 Project: Looking for Synonym</h1>
+  <label for="word">Enter a word:</label>
+  <input type="text" id="word" placeholder="Type a word..." />
+  <button id="submitBtn">Search</button>
+  <h2>Results</h2>
+  <ul id="results"></ul>
+
+  <script>
+    document.getElementById('submitBtn').addEventListener('click', async () => {
+        const word = document.getElementById('word').value;
+      
+        if (!word.trim()) {
+          alert('Please enter a word!');
+          return;
+        }
+      
+        try {
+          // Send a POST request to the backend
+          const response = await fetch('http://127.0.0.1:5000/expand', {
+            method: 'POST', // Changed to POST
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ word }), // Include the word in the request body
+          });
+      
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to fetch synonyms');
+          }
+      
+          const data = await response.json();
+          const synonyms = data.synonyms;
+      
+          const results = document.getElementById('results');
+          results.innerHTML = '';
+      
+          if (synonyms.length > 0) {
+            synonyms.forEach((syn) => {
+              const li = document.createElement('li');
+              li.textContent = syn;
+              results.appendChild(li);
+            });
+          } else {
+            results.textContent = 'No synonyms found.';
+          }
+        } catch (error) {
+          alert('Error: ' + error.message);
+        }
+      });
+  </script>
+</body>
+</html>
