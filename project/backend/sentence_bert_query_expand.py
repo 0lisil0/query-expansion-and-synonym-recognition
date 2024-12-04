@@ -1,23 +1,9 @@
-import os
 import re
 
-import nltk
 import requests
 from nltk.corpus import wordnet as wn
 from sentence_transformers import SentenceTransformer, util
 
-########### TODO: you might need to change the path ###########
-# download wordnet to destination folder
-root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-venv_nitk_path = os.path.join(root, '.venv', 'nltk_data')
-nltk.download('wordnet', download_dir=venv_nitk_path)
-
-# add to path
-nltk.data.path.append(venv_nitk_path)
-
-# you can also just use `nltk.download('wordnet')` without specifying path
-# nltk.download('wordnet')
-########### TODO: you might need to change the path ###########
 
 # load Sentence-BERT model
 sbert_model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -147,14 +133,7 @@ def expand_query(query: str, top_k: int = 10) -> list:
         - list: a list of synonyms
     """
     try:
-        # check if the input is a single word or a sentence
-        if " " not in query.strip():
-            res = get_word_synonyms(query)[:top_k]
-            if not res:
-                return get_phrase_synonym(query)[:top_k]
-            return res
-        else:
-            return get_phrase_synonym(query)[:top_k]
+        return get_phrase_synonym(query)[:top_k]
     except Exception as e:
         return [f"Error: {e}"]
 

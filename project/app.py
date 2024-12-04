@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, send_from_directory
-from backend.query_expand import expand_query
+from backend.sentence_bert_query_expand import expand_query
 from flask_cors import CORS
 
 app = Flask(__name__)
