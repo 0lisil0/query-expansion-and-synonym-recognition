@@ -2,9 +2,8 @@
 
 UIUC CS410 24FA
 
-## Domain: Pending
-
 ## Backend
+- Flask
 
 ### Tech stack
 
@@ -20,12 +19,8 @@ UIUC CS410 24FA
 - Find synonyms
 - Construct an expanded query
 
-### TODO
-
-- Use Flask to get user queries from frontend
-- Use Flask to return expanded queries
-
-# Frontend: Pending
+## Frontend: 
+- A simple HTML page with an input field, a submit button, and a synonym list.
 
 ## Installation Requirements
 
