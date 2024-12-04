@@ -42,7 +42,7 @@ def remove_duplicates(words: list, synset: set) -> set:
     synset.difference_update(words_and_query)
 
 
-def nltk_expand_query(query: str) -> list:
+def nltk_expand_query(query: str, topk: int = 5) -> list:
     """Expand the input query string by finding synonyms.
     Args:
         - query (str): the user input query string
@@ -66,7 +66,7 @@ def nltk_expand_query(query: str) -> list:
     # exclude elements that already in the query or is the query
     remove_duplicates(words, synonyms)
 
-    return list(synonyms)
+    return list(synonyms)[:topk]
 
 
 if __name__ == '__main__':
