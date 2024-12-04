@@ -1,8 +1,23 @@
+import os
+
+import nltk
 from backend.llm_query_expansion import LlamaQuerySynonymFinder
 from backend.nltk_query_expand import nltk_expand_query
 from backend.sentence_bert_query_expand import bert_expand_query
 from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
+from nltk.corpus import wordnet as wn
+
+########### TODO: you might need to change the path ###########
+# download wordnet to destination folder
+root = os.path.dirname(os.path.dirname(__file__))
+venv_nitk_path = os.path.join(root, '.venv', 'nltk_data')
+nltk.download('wordnet', download_dir=venv_nitk_path)
+
+# add to path
+nltk.data.path.append(venv_nitk_path)
+# you can also just use `nltk.download('wordnet')` without specifying path
+########### TODO: you might need to change the path ###########
 
 app = Flask(__name__)
 CORS(app)  # enable Cross-Origin Resource Sharing, looks like it is not useful tho
