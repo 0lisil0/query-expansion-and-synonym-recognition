@@ -102,7 +102,7 @@ class LlamaQuerySynonymFinder:
                     end = i
                     break
             if end-start <= 1:
-                return ['No results found']
+                return []
             sub_text = text[start:end+1].strip()
 
             if sub_text.count('[') > 1:
