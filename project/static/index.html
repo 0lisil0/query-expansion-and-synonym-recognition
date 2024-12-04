@@ -57,6 +57,7 @@
     document.getElementById('submitBtn').addEventListener('click', async () => {
         const word = document.getElementById('word').value;
         const selectedOption = document.querySelector('input[name="option"]:checked').value;
+        const topk = document.getElementById('topk').value;
       
         if (!word.trim()) {
           alert('Please enter a word!');
@@ -70,7 +71,7 @@
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify( {word, option: selectedOption }), // Include the word in the request body
+            body: JSON.stringify( {word, option: selectedOption, topk: topk }), // Include the word in the request body
           });
       
           if (!response.ok) {
