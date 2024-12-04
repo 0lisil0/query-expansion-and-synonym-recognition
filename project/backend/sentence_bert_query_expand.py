@@ -1,7 +1,6 @@
 import re
 
 import requests
-from nltk.corpus import wordnet as wn
 from sentence_transformers import SentenceTransformer, util
 
 
@@ -26,44 +25,6 @@ def clean_str(query: str) -> str:
     cleaned_str = cleaned_str.strip()
 
     return cleaned_str
-
-
-def split_string(query: str) -> list:
-    """Split the cleaned string into a list of words
-
-    Args:
-        query (str): the cleaned string
-
-    Returns:
-        list: a list of words in the cleaned string
-    """
-    return query.split()
-
-
-def get_word_synonyms(word: str) -> list:
-    """Get synonyms for a single word using WordNet.
-
-    Args:
-        word (str): the input word.
-
-    Returns:
-        list: a list of synonyms.
-    """
-    synonyms = set()
-
-    # preprocess the word string
-    cleaned_word = clean_str(word)
-
-    # get synset of each word
-    synsets = wn.synsets(cleaned_word)
-    for syn in synsets:
-        lemmas = syn.lemmas()
-        for lemma in lemmas:
-            syn = lemma.name().replace('_', ' ').lower()
-            if word != syn:
-                synonyms.add(syn)
-
-    return list(synonyms)
 
 
 def get_conceptnet_corpus(query: str, language: str = "en") -> list:
