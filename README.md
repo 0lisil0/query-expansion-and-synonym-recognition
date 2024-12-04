@@ -10,7 +10,7 @@ UIUC CS410 24FA
 - Flask
 - NLTK
 - ConceptNet API and Sentence BERT model
-- Free LlaMa model
+- Together API
 
 ### Functionality
 - Process user queries.
@@ -45,7 +45,7 @@ Currently we only support the free model Llama-Vision-Free
     print(f"synonyms: {synonyms}")
 
 ## Frontend: 
-- A simple HTML page with an input field, a submit button, and a synonym list.
+- A simple HTML page with a text input field, a number input field, a group of radio buttons for algorithm options, a submit button, and a synonym list.
 
 ## Installation Requirements
 
