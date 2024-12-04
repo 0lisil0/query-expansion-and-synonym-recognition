@@ -93,14 +93,8 @@ class LlamaQuerySynonymFinder:
         # Attempt to split the text and extract the synonyms
         try:
             start = text.index(":")+1
-            end = start+1
+            end = text.rfind(']')
 
-            # Loop through the string in reverse to find the last occurrence
-            length = len(text)-1
-            for i in range(length, start, -1):
-                if text[i] == ']':
-                    end = i
-                    break
             if end-start <= 1:
                 return []
             sub_text = text[start:end+1].strip()
