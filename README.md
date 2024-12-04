@@ -8,16 +8,18 @@ UIUC CS410 24FA
 ### Tech stack
 - Python 3.12.2
 - Flask
-- NLTK - for a single word
-- ConceptNet API and Sentence BERT model for multiple words
+- NLTK
+- ConceptNet API and Sentence BERT model
+- Free LlaMa model
 
 ### Functionality
-- Process user queries
-- Identify key terms
-- Find synonyms
-  - We provide support using both NLP synonyms finder using NLTK
-  - and also LLM using LlaMa free model
-- Construct an expanded query
+- Process user queries.
+- Identify key terms.
+- Find synonyms (choose one of the following):
+  - Leverage an NLP-based synonym finder powered by NLTK.
+  - Use the ConceptNet API to retrieve related terms, followed by the Sentence BERT model to calculate similarity.
+  - Utilize the LlaMa free model for synonym identification.
+- Construct an expanded query.
 
 ### LLM set up instruction 
 Currently we only support the free model Llama-Vision-Free

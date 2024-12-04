@@ -1,23 +1,8 @@
-import os
 import re
 
-import nltk
 import requests
-from nltk.corpus import wordnet as wn
 from sentence_transformers import SentenceTransformer, util
 
-########### TODO: you might need to change the path ###########
-# download wordnet to destination folder
-root = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
-venv_nitk_path = os.path.join(root, '.venv', 'nltk_data')
-nltk.download('wordnet', download_dir=venv_nitk_path)
-
-# add to path
-nltk.data.path.append(venv_nitk_path)
-
-# you can also just use `nltk.download('wordnet')` without specifying path
-# nltk.download('wordnet')
-########### TODO: you might need to change the path ###########
 
 # load Sentence-BERT model
 sbert_model = SentenceTransformer("all-MiniLM-L6-v2")
@@ -40,44 +25,6 @@ def clean_str(query: str) -> str:
     cleaned_str = cleaned_str.strip()
 
     return cleaned_str
-
-
-def split_string(query: str) -> list:
-    """Split the cleaned string into a list of words
-
-    Args:
-        query (str): the cleaned string
-
-    Returns:
-        list: a list of words in the cleaned string
-    """
-    return query.split()
-
-
-def get_word_synonyms(word: str) -> list:
-    """Get synonyms for a single word using WordNet.
-
-    Args:
-        word (str): the input word.
-
-    Returns:
-        list: a list of synonyms.
-    """
-    synonyms = set()
-
-    # preprocess the word string
-    cleaned_word = clean_str(word)
-
-    # get synset of each word
-    synsets = wn.synsets(cleaned_word)
-    for syn in synsets:
-        lemmas = syn.lemmas()
-        for lemma in lemmas:
-            syn = lemma.name().replace('_', ' ').lower()
-            if word != syn:
-                synonyms.add(syn)
-
-    return list(synonyms)
 
 
 def get_conceptnet_corpus(query: str, language: str = "en") -> list:
@@ -139,7 +86,7 @@ def get_phrase_synonym(phrase: str) -> list:
     return [corpus[idx] for idx in top_indices]
 
 
-def expand_query(query: str, top_k: int = 10) -> list:
+def bert_expand_query(query: str, top_k: int = 10) -> list:
     """Expand the input query string by finding synonyms.
     Args:
         - query (str): the user input query string
@@ -147,14 +94,7 @@ def expand_query(query: str, top_k: int = 10) -> list:
         - list: a list of synonyms
     """
     try:
-        # check if the input is a single word or a sentence
-        if " " not in query.strip():
-            res = get_word_synonyms(query)[:top_k]
-            if not res:
-                return get_phrase_synonym(query)[:top_k]
-            return res
-        else:
-            return get_phrase_synonym(query)[:top_k]
+        return get_phrase_synonym(query)[:top_k]
     except Exception as e:
         return [f"Error: {e}"]
 
@@ -164,7 +104,7 @@ if __name__ == '__main__':
                   'mayday', 'examples', 'text information',
                   'text retrieval', 'Chase bank']
     for i in test_query:
-        eq = expand_query(i, 5)
+        eq = bert_expand_query(i, 5)
         print(f"Your query is: {i}, and synonyms are: ")
         for i in eq:
             print(f"\t- {i}")
