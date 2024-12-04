@@ -92,8 +92,7 @@ class LlamaQuerySynonymFinder:
         """
         # Attempt to split the text and extract the synonyms
         try:
-            synonyms = text.split(":")[1].strip()
-            start = text.index("[")
+            start = text.index(":")+1
             end = start+1
 
             # Loop through the string in reverse to find the last occurrence
@@ -105,13 +104,10 @@ class LlamaQuerySynonymFinder:
             if end-start <= 1:
                 return ['No results found']
             sub_text = text[start:end+1].strip()
-            print('++++++++++++++++++++++++++')
-            print(sub_text)
-            print('++++++++++++++++++++++++++')
 
             if sub_text.count('[') > 1:
                 return sub_text.split('\n\n')
 
-            return ast.literal_eval(synonyms)
+            return ast.literal_eval(sub_text)
         except Exception:
             return ["Could not parse synonyms"]
