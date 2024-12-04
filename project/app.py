@@ -25,22 +25,25 @@ CORS(app)  # enable Cross-Origin Resource Sharing, looks like it is not useful t
 
 # Serve the HTML js: http://127.0.0.1:5000
 
+
 class Option1Handler:
-    def process(self, word):
+    def process(self, word, topk):
         print(f"Processed '{word}' with Option 1")
-        return bert_expand_query(word)
+        return bert_expand_query(word, topk)
+
 
 class Option2Handler:
-    def process(self, word):
+    def process(self, word, topk):
         print(f"Processed '{word}' with Option 2")
-        synonym_finder = LlamaQuerySynonymFinder(model_name="meta-llama/Llama-Vision-Free")
-        return synonym_finder.get_synonyms(word, num_synonyms=5)
+        synonym_finder = LlamaQuerySynonymFinder(
+            model_name="meta-llama/Llama-Vision-Free")
+        return synonym_finder.get_synonyms(word, topk)
 
 
 class Option3Handler:
-    def process(self, word):
+    def process(self, word, topk):
         print(f"Processed '{word}' with Option 3")
-        return nltk_expand_query(word)
+        return nltk_expand_query(word, topk)
 
 
 option_map = {
@@ -64,6 +67,7 @@ def expand():
         data = request.get_json()
         word = data.get('word')
         option = data.get('option')
+        topk = int(data.get('topk'))
 
         if not word:
             return jsonify({'error': 'No word provided'}), 400
@@ -75,7 +79,7 @@ def expand():
         if not handler:
             return jsonify({"error": "Invalid option selected"}), 400
 
-        synonyms = handler.process(word)
+        synonyms = handler.process(word, topk)
         return jsonify({"synonyms": synonyms}), 200
 
     except Exception as e:
