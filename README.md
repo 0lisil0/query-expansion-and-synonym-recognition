@@ -3,16 +3,15 @@
 UIUC CS410 24FA
 
 ## Backend
+- Flask
 
 ### Tech stack
-
 - Python 3.12.2
 - Flask
 - NLTK - for a single word
 - ConceptNet API and Sentence BERT model for multiple words
 
 ### Functionality
-
 - Process user queries
 - Identify key terms
 - Find synonyms
@@ -22,6 +21,7 @@ UIUC CS410 24FA
 
 ### LLM set up instruction 
 Currently we only support the free model Llama-Vision-Free
+
 #### Token setup
     First you need to set up your access to LlaMa model from the below link:
     ```
@@ -42,12 +42,8 @@ Currently we only support the free model Llama-Vision-Free
     synonyms = synonym_finder.get_synonyms(query, num_synonyms=5)
     print(f"synonyms: {synonyms}")
 
-### TODO
-
-- Use Flask to get user queries from frontend
-- Use Flask to return expanded queries
-
-# Frontend: Pending
+## Frontend: 
+- A simple HTML page with an input field, a submit button, and a synonym list.
 
 ## Installation Requirements
 
