@@ -86,7 +86,7 @@ def get_phrase_synonym(phrase: str) -> list:
     return [corpus[idx] for idx in top_indices]
 
 
-def expand_query(query: str, top_k: int = 10) -> list:
+def bert_expand_query(query: str, top_k: int = 10) -> list:
     """Expand the input query string by finding synonyms.
     Args:
         - query (str): the user input query string
@@ -104,7 +104,7 @@ if __name__ == '__main__':
                   'mayday', 'examples', 'text information',
                   'text retrieval', 'Chase bank']
     for i in test_query:
-        eq = expand_query(i, 5)
+        eq = bert_expand_query(i, 5)
         print(f"Your query is: {i}, and synonyms are: ")
         for i in eq:
             print(f"\t- {i}")

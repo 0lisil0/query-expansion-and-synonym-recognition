@@ -55,7 +55,7 @@ def remove_duplicates(words: list, synset: set) -> set:
     synset.difference_update(words_and_query)
 
 
-def expand_query(query: str) -> list:
+def nltk_expand_query(query: str) -> list:
     """Expand the input query string by finding synonyms.
     Args:
         - query (str): the user input query string
@@ -84,7 +84,7 @@ def expand_query(query: str) -> list:
 
 if __name__ == '__main__':
     test_query = 'software engineer'
-    eq = expand_query(test_query)
+    eq = nltk_expand_query(test_query)
     print(f"Your query is: {test_query}, and synonyms are: ")
     for i in eq:
         print(f"\t- {i}")
