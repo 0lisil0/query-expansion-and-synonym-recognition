@@ -73,7 +73,7 @@ class LlamaQuerySynonymFinder:
             response = self._llama32(messages)
             print(f"response from model: {response}")
             # Extract synonyms from the generated text
-            synonyms = self._parse_synonyms(response)
+            synonyms = self._parse_synonyms(response)[:num_synonyms]
             return synonyms
         except Exception as e:
             print(f"Error generating synonyms: {e}")
