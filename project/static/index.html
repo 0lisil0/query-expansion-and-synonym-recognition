@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Query Synonyms Finder</title>
+  <title>Query Synonyms</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: 'Roboto', sans-serif;
       margin: 0;
       padding: 0;
-      background: #f4f4f9;
+      background: linear-gradient(to bottom, #f0f4ff, #e0e6ff);
       color: #333;
       display: flex;
       justify-content: center;
@@ -20,139 +19,90 @@
     .container {
       width: 100%;
       max-width: 600px;
-      background: #ffffff;
-      padding: 25px 30px;
-      border-radius: 12px;
+      background: white;
+      padding: 20px 30px;
+      border-radius: 10px;
       box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
     h1 {
-      font-size: 1.8em;
-      color: #4a4a4a;
       text-align: center;
+      color: #4a6eff;
+      margin-bottom: 20px;
     }
     label {
       font-weight: bold;
-      margin-top: 15px;
       display: block;
+      margin-bottom: 5px;
       color: #555;
     }
     input[type="text"], input[type="number"] {
       width: 100%;
-
-    input,
-    button {
       padding: 10px;
       font-size: 1em;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      margin: 10px 0;
-      outline: none;
-      transition: 0.3s;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      margin-bottom: 15px;
     }
     input[type="text"]:focus, input[type="number"]:focus {
-      border-color: #007bff;
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+      border-color: #4a6eff;
+      outline: none;
+      box-shadow: 0 0 5px rgba(74, 110, 255, 0.3);
     }
     .options {
       margin: 15px 0;
     }
-    .options p {
-      font-size: 1em;
-      font-weight: bold;
-      color: #555;
-    }
     .option {
       margin-right: 15px;
-      color: #333;
     }
     button {
       width: 100%;
-      background: #007bff;
+      background: #4a6eff;
       color: white;
-      padding: 12px;
+      padding: 12px 15px;
       font-size: 1em;
       border: none;
-      border-radius: 8px;
+      border-radius: 5px;
       cursor: pointer;
-      margin-top: 10px;
       transition: background 0.3s;
     }
     button:hover {
-      background: #0056b3;
-    }
-    #copyAllBtn {
-      background: #6c757d;
-      margin-top: 15px;
-    }
-    #copyAllBtn:hover {
-      background: #5a6268;
+      background: #3a5ed6;
     }
     h2 {
-      margin-top: 20px;
-      font-size: 1.4em;
+      text-align: center;
+      margin-top: 30px;
       color: #333;
     }
-
     ul {
       list-style-type: none;
       padding: 0;
       margin: 0;
     }
-
     li {
-      background: #f8f9fa;
-      border: 1px solid #dee2e6;
-      border-radius: 8px;
-      padding: 10px;
-      margin: 5px 0;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-    li span {
-      flex-grow: 1;
-      color: #495057;
-    }
-    .copy-btn {
-      background: #007bff;
-      color: white;
-      border: none;
+      background: #f8f9ff;
+      border: 1px solid #ddd;
       border-radius: 5px;
-      padding: 5px 10px;
-      cursor: pointer;
-      margin-left: 10px;
-      font-size: 0.9em;
+      padding: 10px 15px;
+      margin-bottom: 10px;
+      transition: transform 0.2s, background 0.3s;
     }
-    .copy-btn:hover {
-      background: #0056b3;
-
-    .options {
-      margin: 10px 0;
-    }
-
-    .option {
-      margin-right: 10px;
+    li:hover {
+      background: #e6edff;
+      transform: translateY(-3px);
     }
   </style>
 </head>
-
 <body>
   <div class="container">
     <h1>Query Synonyms Finder</h1>
     <label for="word">Enter a word:</label>
     <input type="text" id="word" placeholder="Type a word..." />
-  <h1>410 Project: Looking for Synonym</h1>
-  <label for="word">Enter a word:</label>
-  <input type="text" id="word" placeholder="Type a word..." />
-  <br />
-  <label for="numberField">Max. number of results:</label>
-  <input type="number" id="topk" name="topk" min="1" max="50" step="1" value="10" />
-
+    
     <label for="numberField">Max. number of results:</label>
     <input type="number" id="topk" name="topk" min="1" max="50" step="1" value="10" />
 
     <div class="options">
-      <p>Select an option:</p>
+      <p><strong>Select an option:</strong></p>
       <label class="option">
         <input type="radio" name="option" value="Option1" checked /> BERT Option
       </label>
@@ -165,102 +115,56 @@
     </div>
 
     <button id="submitBtn">Search</button>
-    <button id="copyAllBtn">Copy All Results</button>
 
     <h2>Results</h2>
     <ul id="results"></ul>
   </div>
 
   <script>
-    document.getElementById("topk").addEventListener("input", function () {
-      const input = this;
-      const min = parseInt(input.min, 10);
-      const max = parseInt(input.max, 10);
-      const value = parseInt(input.value, 10);
-
-      if (value < min) {
-        input.value = min;
-      } else if (value > max) {
-        input.value = max;
-      }
-    });
-
     document.getElementById('submitBtn').addEventListener('click', async () => {
-      const word = document.getElementById('word').value;
-      const selectedOption = document.querySelector('input[name="option"]:checked').value;
-      const topk = document.getElementById('topk').value;
+        const word = document.getElementById('word').value;
+        const selectedOption = document.querySelector('input[name="option"]:checked').value;
+        const topk = document.getElementById('topk').value;
 
-      if (!word.trim()) {
-        alert('Please enter a word.');
-        alert('Please enter a word!');
-        return;
-      }
-
-      try {
-        const response = await fetch('http://127.0.0.1:5000/expand', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ word, option: selectedOption, topk }),
-        // Send a POST request to the backend
-        const response = await fetch('http://127.0.0.1:5000/expand', {
-          method: 'POST', // Changed to POST
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ word, option: selectedOption, topk: topk }), // Include the word in the request body
-        });
-
-        if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.error || 'Failed to fetch synonyms.');
-          throw new Error(error.error || 'Failed to fetch synonyms');
+        if (!word.trim()) {
+          alert('Please enter a word!');
+          return;
         }
 
-        const data = await response.json();
-        const synonyms = data.synonyms;
-
-        const results = document.getElementById('results');
-        results.innerHTML = '';
-
-        if (synonyms.length > 0) {
-          synonyms.forEach((syn) => {
-            const li = document.createElement('li');
-            const span = document.createElement('span');
-            span.textContent = syn;
-
-            const copyBtn = document.createElement('button');
-            copyBtn.textContent = 'Copy';
-            copyBtn.classList.add('copy-btn');
-            copyBtn.addEventListener('click', () => {
-              navigator.clipboard.writeText(syn);
-              alert(`Copied: ${syn}`);
-            });
-
-            li.appendChild(span);
-            li.appendChild(copyBtn);
-            li.textContent = syn;
-            results.appendChild(li);
+        try {
+          // Send a POST request to the backend
+          const response = await fetch('http://127.0.0.1:5000/expand', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ word, option: selectedOption, topk }),
           });
-        } else {
-          results.textContent = 'No synonyms found.';
-        }
-      } catch (error) {
-        alert('Error: ' + error.message);
-      }
-    });
 
-    document.getElementById('copyAllBtn').addEventListener('click', () => {
-      const results = Array.from(document.querySelectorAll('#results span')).map((span) => span.textContent);
-      if (results.length > 0) {
-        navigator.clipboard.writeText(results.join(', '));
-        alert('All results copied to clipboard!');
-      } else {
-        alert('No results to copy!'); 
-      }
-    });
+          if (!response.ok) {
+            const error = await response.json();
+            throw new Error(error.error || 'Failed to fetch synonyms');
+          }
+
+          const data = await response.json();
+          const synonyms = data.synonyms;
+
+          const results = document.getElementById('results');
+          results.innerHTML = '';
+
+          if (synonyms.length > 0) {
+            synonyms.forEach((syn) => {
+              const li = document.createElement('li');
+              li.textContent = syn;
+              results.appendChild(li);
+            });
+          } else {
+            results.textContent = 'No synonyms found.';
+          }
+        } catch (error) {
+          alert('Error: ' + error.message);
+        }
+      });
   </script>
 </body>
-
 </html>
