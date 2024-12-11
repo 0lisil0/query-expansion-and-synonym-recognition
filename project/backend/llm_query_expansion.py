@@ -96,7 +96,12 @@ class LlamaQuerySynonymFinder:
                 start = text.index("[")
             except ValueError:
                 return []
-            end = text.index("]", start)  # only display first list in response
+            try:
+                # only display first list in response
+                end = text.index("]", start)
+            except ValueError:
+                text += ']'
+                end = len(text)
 
             if end-start <= 1:
                 return []
