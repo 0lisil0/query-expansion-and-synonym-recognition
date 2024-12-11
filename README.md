@@ -21,6 +21,17 @@ UIUC CS410 24FA
   - Utilize the LlaMa free model for synonym identification.
 - Construct an expanded query.
 
+## Frontend: 
+- A simple HTML page with a text input field, a number input field, a group of radio buttons for algorithm options, a submit button, and a synonym list.
+
+## Installation Requirements
+
+To install the required dependencies, run the following command in the project directory:
+
+```
+pip install -r requirements.txt
+```
+
 ### LLM set up instruction 
 Currently we only support the free model Llama-Vision-Free
 
@@ -38,27 +49,12 @@ Currently we only support the free model Llama-Vision-Free
     synonyms = synonym_finder.get_synonyms(query, num_synonyms=5)
     print(f"synonyms: {synonyms}")
 
-## Frontend: 
-- A simple HTML page with a text input field, a number input field, a group of radio buttons for algorithm options, a submit button, and a synonym list.
+## Start the project
 
-## Installation Requirements
-
-To install the required dependencies, run the following command in the project directory:
-
-```bash
-pip install -r requirements.txt
+### To start the project, use the following command:
 ```
-
-## Start the Flask Backend
-
-### To start the Flask backend, use the following command:
-
-```bash
 python app.py
 ```
 
-## Access the Frontend
-
 ### Open the browser and navigate to:
-
 [http://127.0.0.1:5000/](http://127.0.0.1:5000/)
