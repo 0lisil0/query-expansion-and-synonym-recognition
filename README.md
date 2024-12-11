@@ -25,18 +25,12 @@ UIUC CS410 24FA
 Currently we only support the free model Llama-Vision-Free
 
 #### Token setup
-    First you need to set up your access to LlaMa model from the below link:
+1. Create an account (or log in if you already have one) on [Together AI](https://www.together.ai/).
+2. To temporarily set the environment variable, use the following command in PowerShell:
     ```
-    https://github.com/meta-llama/llama/blob/main/README.md
+    $env:TOGETHER_API_KEY="your_actual_api_key_here"
     ```
-    Then download the model you need
-    ```
-    https://www.llama.com/llama-downloads/
-    ```
-    Finally, follow this instruction to set up the credential,  the credential is set up using together
-    ```
-    https://github.com/meta-llama/llama-recipes/blob/main/recipes/quickstart/build_with_Llama_3_2.ipynb
-    ```
+    Alternatively, you can save the key in a .env file and load it from there.
 
 #### Example usage of LLM synonyms finder
     synonym_finder = LlamaQuerySynonymFinder(model_name="meta-llama/Llama-Vision-Free")
