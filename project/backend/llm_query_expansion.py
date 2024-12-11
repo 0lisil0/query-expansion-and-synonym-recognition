@@ -92,8 +92,11 @@ class LlamaQuerySynonymFinder:
         """
         # Attempt to split the text and extract the synonyms
         try:
-            start = text.index(":")+1
-            end = text.rfind(']')
+            try:
+                start = text.index("[")
+            except ValueError:
+                return []
+            end = text.index("]", start)  # only display first list in response
 
             if end-start <= 1:
                 return []
@@ -102,6 +105,11 @@ class LlamaQuerySynonymFinder:
             if sub_text.count('[') > 1:
                 return sub_text.split('\n\n')
 
-            return ast.literal_eval(sub_text)
-        except Exception:
-            return ["Could not parse synonyms"]
+            try:
+                return ast.literal_eval(sub_text)
+            except Exception:
+                sub_text_temp = sub_text[1:len(sub_text)-1]
+                sub_text_temp_list = sub_text_temp.split(", ")
+                return [word.strip("'") for word in sub_text_temp_list]
+        except Exception as e:
+            return [f"Could not parse synonyms: {e}"]
