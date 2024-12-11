@@ -3,8 +3,6 @@
 UIUC CS410 24FA
 
 ## Backend
-- Flask
-
 ### Tech stack
 - Python 3.12.2
 - Flask
