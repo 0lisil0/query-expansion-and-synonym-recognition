@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -37,6 +38,9 @@
     }
     input[type="text"], input[type="number"] {
       width: 100%;
+
+    input,
+    button {
       padding: 10px;
       font-size: 1em;
       border: 1px solid #ccc;
@@ -88,11 +92,13 @@
       font-size: 1.4em;
       color: #333;
     }
+
     ul {
       list-style-type: none;
       padding: 0;
       margin: 0;
     }
+
     li {
       background: #f8f9fa;
       border: 1px solid #dee2e6;
@@ -119,14 +125,28 @@
     }
     .copy-btn:hover {
       background: #0056b3;
+
+    .options {
+      margin: 10px 0;
+    }
+
+    .option {
+      margin-right: 10px;
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <h1>Query Synonyms Finder</h1>
     <label for="word">Enter a word:</label>
     <input type="text" id="word" placeholder="Type a word..." />
+  <h1>410 Project: Looking for Synonym</h1>
+  <label for="word">Enter a word:</label>
+  <input type="text" id="word" placeholder="Type a word..." />
+  <br />
+  <label for="numberField">Max. number of results:</label>
+  <input type="number" id="topk" name="topk" min="1" max="50" step="1" value="10" />
 
     <label for="numberField">Max. number of results:</label>
     <input type="number" id="topk" name="topk" min="1" max="50" step="1" value="10" />
@@ -152,6 +172,19 @@
   </div>
 
   <script>
+    document.getElementById("topk").addEventListener("input", function () {
+      const input = this;
+      const min = parseInt(input.min, 10);
+      const max = parseInt(input.max, 10);
+      const value = parseInt(input.value, 10);
+
+      if (value < min) {
+        input.value = min;
+      } else if (value > max) {
+        input.value = max;
+      }
+    });
+
     document.getElementById('submitBtn').addEventListener('click', async () => {
       const word = document.getElementById('word').value;
       const selectedOption = document.querySelector('input[name="option"]:checked').value;
@@ -159,6 +192,7 @@
 
       if (!word.trim()) {
         alert('Please enter a word.');
+        alert('Please enter a word!');
         return;
       }
 
@@ -169,11 +203,19 @@
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ word, option: selectedOption, topk }),
+        // Send a POST request to the backend
+        const response = await fetch('http://127.0.0.1:5000/expand', {
+          method: 'POST', // Changed to POST
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ word, option: selectedOption, topk: topk }), // Include the word in the request body
         });
 
         if (!response.ok) {
           const error = await response.json();
           throw new Error(error.error || 'Failed to fetch synonyms.');
+          throw new Error(error.error || 'Failed to fetch synonyms');
         }
 
         const data = await response.json();
@@ -198,6 +240,7 @@
 
             li.appendChild(span);
             li.appendChild(copyBtn);
+            li.textContent = syn;
             results.appendChild(li);
           });
         } else {
@@ -219,4 +262,5 @@
     });
   </script>
 </body>
+
 </html>
