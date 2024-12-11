@@ -60,12 +60,11 @@ def expand():
             return jsonify({'error': 'No word provided'}), 400
 
         # Call the `expand_query` function, which is currently a build-in function now
-        # TODO: probably implement our own expand_query function here, but it might be time-consuming
-
         handler = option_map.get(option)
         if not handler:
             return jsonify({"error": "Invalid option selected"}), 400
 
+        word = word.lower()
         synonyms = handler.process(word, topk)
         return jsonify({"synonyms": synonyms}), 200
 

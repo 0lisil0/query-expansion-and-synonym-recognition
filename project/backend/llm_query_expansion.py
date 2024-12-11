@@ -73,7 +73,7 @@ class LlamaQuerySynonymFinder:
             response = self._llama32(messages)
             print(f"response from model: {response}")
             # Extract synonyms from the generated text
-            synonyms = self._parse_synonyms(response)
+            synonyms = self._parse_synonyms(response)[:num_synonyms]
             return synonyms
         except Exception as e:
             print(f"Error generating synonyms: {e}")
@@ -92,8 +92,16 @@ class LlamaQuerySynonymFinder:
         """
         # Attempt to split the text and extract the synonyms
         try:
-            start = text.index(":")+1
-            end = text.rfind(']')
+            try:
+                start = text.index("[")
+            except ValueError:
+                return []
+            try:
+                # only display first list in response
+                end = text.index("]", start)
+            except ValueError:
+                text += ']'
+                end = len(text)
 
             if end-start <= 1:
                 return []
@@ -102,6 +110,11 @@ class LlamaQuerySynonymFinder:
             if sub_text.count('[') > 1:
                 return sub_text.split('\n\n')
 
-            return ast.literal_eval(sub_text)
-        except Exception:
-            return ["Could not parse synonyms"]
+            try:
+                return ast.literal_eval(sub_text)
+            except Exception:
+                sub_text_temp = sub_text[1:len(sub_text)-1]
+                sub_text_temp_list = sub_text_temp.split(", ")
+                return [word.strip("'") for word in sub_text_temp_list]
+        except Exception as e:
+            return [f"Could not parse synonyms: {e}"]
