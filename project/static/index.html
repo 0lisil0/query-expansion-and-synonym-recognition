@@ -3,101 +3,220 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Query Synonyms</title>
+  <title>Query Synonyms Finder</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 2em;
+      margin: 0;
+      padding: 0;
+      background: #f4f4f9;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
     }
-    input, button {
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background: #ffffff;
+      padding: 25px 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 1.8em;
+      color: #4a4a4a;
+      text-align: center;
+    }
+    label {
+      font-weight: bold;
+      margin-top: 15px;
+      display: block;
+      color: #555;
+    }
+    input[type="text"], input[type="number"] {
+      width: 100%;
       padding: 10px;
       font-size: 1em;
-      margin: 5px 0;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      margin: 10px 0;
+      outline: none;
+      transition: 0.3s;
+    }
+    input[type="text"]:focus, input[type="number"]:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 5px rgba(0, 123, 255, 0.3);
+    }
+    .options {
+      margin: 15px 0;
+    }
+    .options p {
+      font-size: 1em;
+      font-weight: bold;
+      color: #555;
+    }
+    .option {
+      margin-right: 15px;
+      color: #333;
+    }
+    button {
+      width: 100%;
+      background: #007bff;
+      color: white;
+      padding: 12px;
+      font-size: 1em;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: background 0.3s;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    #copyAllBtn {
+      background: #6c757d;
+      margin-top: 15px;
+    }
+    #copyAllBtn:hover {
+      background: #5a6268;
+    }
+    h2 {
+      margin-top: 20px;
+      font-size: 1.4em;
+      color: #333;
     }
     ul {
       list-style-type: none;
       padding: 0;
+      margin: 0;
     }
     li {
+      background: #f8f9fa;
+      border: 1px solid #dee2e6;
+      border-radius: 8px;
+      padding: 10px;
       margin: 5px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
-    .options {
-      margin: 10px 0;
+    li span {
+      flex-grow: 1;
+      color: #495057;
     }
-    .option {
-      margin-right: 10px;
+    .copy-btn {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      cursor: pointer;
+      margin-left: 10px;
+      font-size: 0.9em;
+    }
+    .copy-btn:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <h1>410 Project: Looking for Synonym</h1>
-  <label for="word">Enter a word:</label>
-  <input type="text" id="word" placeholder="Type a word..." />
-  <br/>
-  <label for="numberField">Max. number of results:</label>
-  <input type="number" id="topk" name="topk" min="1" max="50" step="1" value="10" />
+  <div class="container">
+    <h1>Query Synonyms Finder</h1>
+    <label for="word">Enter a word:</label>
+    <input type="text" id="word" placeholder="Type a word..." />
 
-  <div class="options">
-    <p>Select an option:</p>
-    <label class="option">
-      <input type="radio" name="option" value="Option1" checked /> BERT Option
-    </label>
-    <label class="option">
-      <input type="radio" name="option" value="Option2" /> LLM Option
-    </label>
-    <label class="option">
-      <input type="radio" name="option" value="Option3" /> NLTK Option
-    </label>
+    <label for="numberField">Max. number of results:</label>
+    <input type="number" id="topk" name="topk" min="1" max="50" step="1" value="10" />
+
+    <div class="options">
+      <p>Select an option:</p>
+      <label class="option">
+        <input type="radio" name="option" value="Option1" checked /> BERT Option
+      </label>
+      <label class="option">
+        <input type="radio" name="option" value="Option2" /> LLM Option
+      </label>
+      <label class="option">
+        <input type="radio" name="option" value="Option3" /> NLTK Option
+      </label>
+    </div>
+
+    <button id="submitBtn">Search</button>
+    <button id="copyAllBtn">Copy All Results</button>
+
+    <h2>Results</h2>
+    <ul id="results"></ul>
   </div>
-  <button id="submitBtn">Search</button>
-  <h2>Results</h2>
-  <ul id="results"></ul>
 
   <script>
     document.getElementById('submitBtn').addEventListener('click', async () => {
-        const word = document.getElementById('word').value;
-        const selectedOption = document.querySelector('input[name="option"]:checked').value;
-        const topk = document.getElementById('topk').value;
-      
-        if (!word.trim()) {
-          alert('Please enter a word!');
-          return;
+      const word = document.getElementById('word').value;
+      const selectedOption = document.querySelector('input[name="option"]:checked').value;
+      const topk = document.getElementById('topk').value;
+
+      if (!word.trim()) {
+        alert('Please enter a word.');
+        return;
+      }
+
+      try {
+        const response = await fetch('http://127.0.0.1:5000/expand', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ word, option: selectedOption, topk }),
+        });
+
+        if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Failed to fetch synonyms.');
         }
-      
-        try {
-          // Send a POST request to the backend
-          const response = await fetch('http://127.0.0.1:5000/expand', {
-            method: 'POST', // Changed to POST
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify( {word, option: selectedOption, topk: topk }), // Include the word in the request body
-          });
-      
-          if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Failed to fetch synonyms');
-          }
-      
-          const data = await response.json();
-          const synonyms = data.synonyms;
-      
-          const results = document.getElementById('results');
-          results.innerHTML = '';
-      
-          if (synonyms.length > 0) {
-            synonyms.forEach((syn) => {
-              const li = document.createElement('li');
-              li.textContent = syn;
-              results.appendChild(li);
+
+        const data = await response.json();
+        const synonyms = data.synonyms;
+
+        const results = document.getElementById('results');
+        results.innerHTML = '';
+
+        if (synonyms.length > 0) {
+          synonyms.forEach((syn) => {
+            const li = document.createElement('li');
+            const span = document.createElement('span');
+            span.textContent = syn;
+
+            const copyBtn = document.createElement('button');
+            copyBtn.textContent = 'Copy';
+            copyBtn.classList.add('copy-btn');
+            copyBtn.addEventListener('click', () => {
+              navigator.clipboard.writeText(syn);
+              alert(`Copied: ${syn}`);
             });
-          } else {
-            results.textContent = 'No synonyms found.';
-          }
-        } catch (error) {
-          alert('Error: ' + error.message);
+
+            li.appendChild(span);
+            li.appendChild(copyBtn);
+            results.appendChild(li);
+          });
+        } else {
+          results.textContent = 'No synonyms found.';
         }
-      });
+      } catch (error) {
+        alert('Error: ' + error.message);
+      }
+    });
+
+    document.getElementById('copyAllBtn').addEventListener('click', () => {
+      const results = Array.from(document.querySelectorAll('#results span')).map((span) => span.textContent);
+      if (results.length > 0) {
+        navigator.clipboard.writeText(results.join(', '));
+        alert('All results copied to clipboard!');
+      } else {
+        alert('No results to copy!');
+      }
+    });
   </script>
 </body>
 </html>
