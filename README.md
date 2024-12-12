@@ -2,10 +2,10 @@
 
 ## CS 410 Text Information Systems, 2024 Fall
 
-- Lisi Lei (lisilei2@illinois.edu),
-- Ivy He (qiuhanh2@illinois.edu),
-- Hilda Liu (hildal2@illinois.edu),
-- Puyu Yang (pyang33@illinois.edu),
+- Lisi Lei (lisilei2@illinois.edu)
+- Ivy He (qiuhanh2@illinois.edu)
+- Hilda Liu (hildal2@illinois.edu)
+- Puyu Yang (pyang33@illinois.edu)
 - Meilin Liu (meilinl2@illinois.edu)
 
 ## Abstract
