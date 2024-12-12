@@ -100,7 +100,8 @@ This project supports **Llama-Vision-Free** through the Together API for LLM-bas
 
 ## Tutorial
 
-A video tutorial can be found here: TODO
+A video tutorial can be found here: [https://www.youtube.com/watch?v=Jo5L4WYMV0w](https://www.youtube.com/watch?v=Jo5L4WYMV0w)
+Slide used for the video is here: [https://docs.google.com/presentation/d/1xhyK7P2VIbOAA2pDB1NlCfhPpJOgJRvff1tjUUtrjR8/edit?usp=sharing](https://docs.google.com/presentation/d/1xhyK7P2VIbOAA2pDB1NlCfhPpJOgJRvff1tjUUtrjR8/edit?usp=sharing)
 
 ## Contribution of Team Members
 - Backend Implementation (`llm_query_expansion.py`, `nltk_query_expand.py`, `sentence_bert_query_expand.py`) : Lisi Lei, Meilin Liu 
