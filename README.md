@@ -105,8 +105,8 @@ Slide used for the video is here: [https://docs.google.com/presentation/d/1xhyK7
 
 ## Contribution of Team Members
 - Backend Implementation (`llm_query_expansion.py`, `nltk_query_expand.py`, `sentence_bert_query_expand.py`) : Lisi Lei, Meilin Liu 
-- Frontend Implementation (`index.html`): Ivy He, Hilda Liu
-- Flask Implementation (`index.html`, `requirements.txt`, `app.py`) Puyu Yang 
+- Frontend Implementation (`index.html`): Hilda Liu, Ivy He
+- Flask Implementation (`index.html`, `requirements.txt`, `app.py`): Puyu Yang 
 - Testing: Meilin Liu, Lisi Lei
 - Tech Review: Lisi Lei , Meilin Liu , Hilda Liu 
 - Short Video Presenation: Hilda Liu
