@@ -121,6 +121,20 @@
   </div>
 
   <script>
+    // check number field range
+    document.getElementById("topk").addEventListener("input", function () {
+      const input = this;
+      const min = parseInt(input.min, 10);
+      const max = parseInt(input.max, 10);
+      const value = parseInt(input.value, 10);
+
+      if (value < min) {
+        input.value = min;
+      } else if (value > max) {
+        input.value = max;
+      }
+    });
+
     document.getElementById('submitBtn').addEventListener('click', async () => {
         const word = document.getElementById('word').value;
         const selectedOption = document.querySelector('input[name="option"]:checked').value;
